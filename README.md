@@ -69,9 +69,44 @@ cd Hybrid-Machine-Learning-for-Transaction-Pattern-Analysis-and-Fraud-Detection
 
 # Install dependencies
 pip install -r requirements.txt
-```
 
-## Usage
+# Hybrid Machine Learning for Transaction Pattern Analysis and Fraud Detection
+
+## Struktur Proyek
+
+- `data/` — Dataset mentah dan hasil intermediate (preprocessed, clustered)
+- `notebooks/` — Notebook eksplorasi dan dokumentasi pipeline
+- `scripts/` — Script modular untuk EDA, preprocessing, clustering, dan klasifikasi
+- `models/` — Model terlatih dan artefak terkait
+- `tests/` — Unit test untuk preprocessing, clustering, dan klasifikasi
+
+## Alur Pengembangan & Branching
+- `feat/` — Fitur baru (EDA, preprocessing, modeling)
+- `fix/` — Perbaikan bug minor
+- `hotfix/` — Perbaikan kritis/produksi
+- `docs/` — Dokumentasi (README, penjelasan pipeline)
+- `test/` — Unit test fungsi & validasi model
+- `refactor/` — Perapian struktur & code cleanup
+
+## Pipeline ML
+1. **EDA:**
+   Jalankan `python scripts/eda.py` untuk eksplorasi awal data.
+2. **Preprocessing:**
+   Jalankan `python scripts/preprocessing.py` untuk normalisasi data.
+3. **Clustering:**
+   Jalankan `python scripts/clustering.py` untuk pseudo-labeling dengan KMeans.
+4. **Classification:**
+   Jalankan `python scripts/classification.py` untuk klasifikasi Decision Tree.
+
+## Dependensi
+- scikit-learn==1.7.0
+- pandas
+- matplotlib
+
+Instalasi: `pip install -r requirements.txt`
+
+## Testing
+Jalankan `pytest tests/` untuk menjalankan seluruh unit test.
 
 ### Step 1: Generate Sample Dataset
 
