@@ -41,9 +41,9 @@ def predict_transaction(models, transaction_data):
     
     # Encode categorical features if they are strings
     for col, encoder in models['label_encoders'].items():
-        if col in df.columns:
+        if col in df.columns and len(df) > 0:
             # Only transform if the column contains string values
-            if df[col].dtype == 'object' or isinstance(df[col].iloc[0], str):
+            if df[col].dtype == 'object' or (not pd.isna(df[col].iloc[0]) and isinstance(df[col].iloc[0], str)):
                 df[col] = encoder.transform(df[col])
             # If already numeric, assume it's already encoded
     
