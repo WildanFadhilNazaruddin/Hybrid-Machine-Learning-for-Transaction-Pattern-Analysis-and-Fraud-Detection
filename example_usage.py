@@ -30,7 +30,7 @@ def predict_transaction(models, transaction_data):
     models : dict
         Dictionary containing all loaded models
     transaction_data : dict
-        Transaction features
+        Transaction features (categorical features should be strings or already encoded as integers)
     
     Returns:
     --------
@@ -39,10 +39,13 @@ def predict_transaction(models, transaction_data):
     # Create DataFrame from input
     df = pd.DataFrame([transaction_data])
     
-    # Encode categorical features if present
+    # Encode categorical features if they are strings
     for col, encoder in models['label_encoders'].items():
-        if col in df.columns and df[col].dtype == 'object':
-            df[col] = encoder.transform(df[col])
+        if col in df.columns:
+            # Only transform if the column contains string values
+            if df[col].dtype == 'object' or isinstance(df[col].iloc[0], str):
+                df[col] = encoder.transform(df[col])
+            # If already numeric, assume it's already encoded
     
     # Scale features
     df_scaled = models['scaler'].transform(df)
@@ -81,7 +84,9 @@ def main():
     print(f"  Recall:    {metrics['recall']:.4f}")
     print(f"  F1-Score:  {metrics['f1_score']:.4f}\n")
     
-    # Example transactions
+    # Example transactions with encoded values
+    # Note: In a real scenario, you would pass raw string values and the function
+    # would encode them. Here we use pre-encoded values for demonstration.
     examples = [
         {
             'name': 'High-value transaction',
@@ -90,8 +95,8 @@ def main():
                 'transaction_count': 3,
                 'account_age_days': 1200,
                 'transaction_hour': 2,
-                'merchant_category': 1,  # Already encoded
-                'device_type': 0,        # Already encoded
+                'merchant_category': 1,  # Encoded value (e.g., 'online')
+                'device_type': 0,        # Encoded value (e.g., 'desktop')
                 'location_match': 0,
                 'avg_transaction_amount': 150.0,
                 'risk_score': 2.5,
@@ -105,8 +110,8 @@ def main():
                 'transaction_count': 5,
                 'account_age_days': 2000,
                 'transaction_hour': 14,
-                'merchant_category': 2,
-                'device_type': 1,
+                'merchant_category': 2,  # Encoded value (e.g., 'restaurant')
+                'device_type': 1,        # Encoded value (e.g., 'mobile')
                 'location_match': 1,
                 'avg_transaction_amount': 5.0,
                 'risk_score': 0.1,
@@ -120,8 +125,8 @@ def main():
                 'transaction_count': 10,
                 'account_age_days': 500,
                 'transaction_hour': 23,
-                'merchant_category': 3,
-                'device_type': 2,
+                'merchant_category': 3,  # Encoded value (e.g., 'gas_station')
+                'device_type': 2,        # Encoded value (e.g., 'tablet')
                 'location_match': 0,
                 'avg_transaction_amount': 10.0,
                 'risk_score': 1.5,

@@ -113,19 +113,25 @@ def test_prediction():
         kmeans = joblib.load('models/kmeans_model.pkl')
         dt_classifier = joblib.load('models/decision_tree_model.pkl')
         
-        # Create sample data
+        # Create sample data matching the pipeline's expected features
+        # This should match the features after preprocessing in ml_pipeline.py
         sample_data = pd.DataFrame({
             'amount': [100.0],
             'transaction_count': [5],
             'account_age_days': [1000],
             'transaction_hour': [14],
-            'merchant_category': [1],
-            'device_type': [0],
+            'merchant_category': [1],  # Already encoded
+            'device_type': [0],         # Already encoded
             'location_match': [1],
             'avg_transaction_amount': [20.0],
             'risk_score': [0.5],
-            'amount_bin': [2]
+            'amount_bin': [2]           # Binned feature
         })
+        
+        # Verify feature count matches
+        expected_features = scaler.n_features_in_
+        if len(sample_data.columns) != expected_features:
+            print(f"⚠ Warning: Sample has {len(sample_data.columns)} features, expected {expected_features}")
         
         # Scale data
         sample_scaled = scaler.transform(sample_data)
