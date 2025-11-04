@@ -58,7 +58,11 @@ numpy>=1.24.0
 matplotlib>=3.7.0
 seaborn>=0.12.0
 joblib>=1.3.0
+yellowbrick>=1.5
+setuptools>=68.0.0
 ```
+
+**Note:** For Python 3.12+, `setuptools>=68.0.0` is required to provide `distutils` compatibility for the `yellowbrick` library.
 
 ## Installation
 
