@@ -9,12 +9,14 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/WildanFadhilNazaruddin/Hybrid-Machine-Learning-for-Transaction-Pattern-Analysis-and-Fraud-Detection.git
+git clone <repository-url>
 cd Hybrid-Machine-Learning-for-Transaction-Pattern-Analysis-and-Fraud-Detection
 
 # Install dependencies
 pip install -r requirements.txt
 ```
+
+Replace `<repository-url>` with the actual repository URL.
 
 ## Python 3.12 Compatibility
 

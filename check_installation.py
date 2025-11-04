@@ -18,11 +18,14 @@ def check_python_version() -> Tuple[bool, str]:
 
 def check_module(module_name: str, import_path: str = None) -> Tuple[bool, str]:
     """Check if a module can be imported."""
+    import importlib
     try:
         if import_path:
-            exec(f"from {import_path} import {module_name.split('.')[-1]}")
+            # Use importlib for safe dynamic imports
+            module = importlib.import_module(import_path)
+            getattr(module, module_name.split('.')[-1])
         else:
-            __import__(module_name)
+            importlib.import_module(module_name)
         return True, f"✓ {module_name}"
     except ImportError as e:
         return False, f"❌ {module_name}: {str(e)}"
@@ -34,7 +37,13 @@ def check_distutils_compat() -> Tuple[bool, str]:
     if sys.version_info >= (3, 12):
         try:
             import setuptools
-            sys.modules['distutils'] = setuptools._distutils
+            # Handle potential changes in setuptools API
+            if hasattr(setuptools, '_distutils'):
+                sys.modules['distutils'] = setuptools._distutils
+            else:
+                # Fallback: try direct import
+                import distutils
+                sys.modules['distutils'] = distutils
             from distutils.version import LooseVersion
             return True, "✓ distutils compatibility (via setuptools) for Python 3.12+"
         except (ImportError, AttributeError) as e:
